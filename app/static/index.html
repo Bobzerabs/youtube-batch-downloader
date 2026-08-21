@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Baixe seus próprios vídeos e Shorts do YouTube em MP4 ou MP3, individualmente ou em lote." />
+  <title>TubeBatch — YouTube & Shorts Downloader</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="page-glow glow-one"></div>
+  <div class="page-glow glow-two"></div>
+
+  <header class="topbar">
+    <a class="brand" href="/">
+      <span class="brand-icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.6 7.2a2.9 2.9 0 0 0-2-2C17.8 4.7 12 4.7 12 4.7s-5.8 0-7.6.5a2.9 2.9 0 0 0-2 2A30 30 0 0 0 1.9 12a30 30 0 0 0 .5 4.8 2.9 2.9 0 0 0 2 2c1.8.5 7.6.5 7.6.5s5.8 0 7.6-.5a2.9 2.9 0 0 0 2-2 30 30 0 0 0 .5-4.8 30 30 0 0 0-.5-4.8ZM10 15.2V8.8l5.5 3.2L10 15.2Z"/></svg>
+      </span>
+      <span>Tube<span class="accent">Batch</span></span>
+    </a>
+
+    <nav class="nav-links">
+      <a href="#downloader">Downloader</a>
+      <a href="#como-funciona">Como funciona</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+
+    <span class="secure-badge">
+      <span class="pulse-dot"></span>
+      Online
+    </span>
+  </header>
+
+  <main>
+    <section class="hero" id="downloader">
+      <div class="eyebrow">
+        <span class="spark">✦</span>
+        YOUTUBE + SHORTS • DOWNLOAD EM LOTE
+      </div>
+      <h1>Baixe vídeos do YouTube<br><span>do seu jeito.</span></h1>
+      <p class="hero-subtitle">
+        Cole um ou vários links, escolha a qualidade, MP4 ou MP3 e processe tudo de uma vez.
+      </p>
+
+      <div class="downloader-card">
+        <div class="card-header">
+          <div>
+            <p class="step-label">PASSO 1</p>
+            <h2>Cole seus links</h2>
+          </div>
+          <button class="ghost-button" id="pasteButton" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4.5h1.2a3 3 0 0 1 5.6 0H16A2.5 2.5 0 0 1 18.5 7v12A2.5 2.5 0 0 1 16 21H8a2.5 2.5 0 0 1-2.5-2.5V7A2.5 2.5 0 0 1 8 4.5Zm4-1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z"/></svg>
+            Colar
+          </button>
+        </div>
+
+        <div class="input-shell">
+          <textarea
+            id="urlInput"
+            rows="5"
+            spellcheck="false"
+            placeholder="https://youtube.com/watch?v=...&#10;https://youtube.com/shorts/...&#10;https://youtu.be/..."
+          ></textarea>
+          <div class="input-footer">
+            <span><strong id="linkCount">0</strong> links detectados</span>
+            <span>1 link por linha</span>
+          </div>
+        </div>
+
+        <div class="action-row">
+          <button class="primary-button" id="analyzeButton" type="button">
+            <span>Analisar vídeos</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9.5 17 5-5-5-5 1.4-1.4L17.3 12l-6.4 6.4L9.5 17Z"/></svg>
+          </button>
+          <button class="clear-button" id="clearButton" type="button">Limpar</button>
+        </div>
+
+        <div class="mini-note">
+          Use apenas conteúdo que seja seu, de domínio público ou para o qual você tenha autorização para baixar.
+        </div>
+      </div>
+    </section>
+
+    <section class="results-section hidden" id="resultsSection">
+      <div class="section-heading">
+        <div>
+          <p class="step-label">PASSO 2</p>
+          <h2>Configure seus downloads</h2>
+          <p>Você pode alterar o formato e a qualidade individualmente ou aplicar a todos.</p>
+        </div>
+        <div class="batch-controls">
+          <select id="batchFormat">
+            <option value="">Formato para todos</option>
+            <option value="mp4">MP4 — Vídeo</option>
+            <option value="mp3">MP3 — Áudio</option>
+          </select>
+          <select id="batchQuality">
+            <option value="">Qualidade para todos</option>
+            <option value="best">Melhor disponível</option>
+            <option value="2160">2160p / 4K</option>
+            <option value="1440">1440p</option>
+            <option value="1080">1080p</option>
+            <option value="720">720p</option>
+            <option value="480">480p</option>
+            <option value="360">360p</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="videoList" class="video-list"></div>
+
+      <div class="download-panel">
+        <div>
+          <span class="selected-count"><strong id="selectedCount">0</strong> vídeos prontos</span>
+          <p>Os arquivos ficam disponíveis individualmente e também em um ZIP.</p>
+        </div>
+        <button class="primary-button large" id="downloadButton" type="button">
+          Baixar tudo
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 3h2v10.2l3.6-3.6L18 11l-6 6-6-6 1.4-1.4 3.6 3.6V3Zm-5 16h12v2H6v-2Z"/></svg>
+        </button>
+      </div>
+    </section>
+
+    <section class="progress-section hidden" id="progressSection">
+      <div class="section-heading">
+        <div>
+          <p class="step-label">PASSO 3</p>
+          <h2>Processando seu lote</h2>
+          <p id="jobSummary">Preparando os downloads...</p>
+        </div>
+        <div class="overall-progress">
+          <strong id="overallPercent">0%</strong>
+          <span>Progresso geral</span>
+        </div>
+      </div>
+
+      <div class="progress-track">
+        <div class="progress-fill" id="overallBar"></div>
+      </div>
+
+      <div id="jobItems" class="job-items"></div>
+
+      <div class="archive-box hidden" id="archiveBox">
+        <div>
+          <span class="archive-icon">ZIP</span>
+          <div>
+            <strong>Seu lote está pronto</strong>
+            <p>Baixe todos os arquivos processados em um único pacote.</p>
+          </div>
+        </div>
+        <a class="primary-button" id="archiveLink" href="#">Baixar ZIP</a>
+      </div>
+    </section>
+
+    <section class="features" id="como-funciona">
+      <article>
+        <span class="feature-number">01</span>
+        <h3>Cole vários links</h3>
+        <p>Vídeos normais, links curtos do youtu.be e Shorts podem entrar no mesmo lote.</p>
+      </article>
+      <article>
+        <span class="feature-number">02</span>
+        <h3>Escolha o formato</h3>
+        <p>Use MP4 com resolução personalizada ou converta o áudio para MP3 em até 320 kbps.</p>
+      </article>
+      <article>
+        <span class="feature-number">03</span>
+        <h3>Baixe de uma vez</h3>
+        <p>Acompanhe o processamento e baixe cada arquivo ou um ZIP com todo o lote.</p>
+      </article>
+    </section>
+
+    <section class="faq" id="faq">
+      <div class="faq-title">
+        <p class="step-label">DÚVIDAS</p>
+        <h2>Perguntas frequentes</h2>
+      </div>
+
+      <details>
+        <summary>Funciona com YouTube Shorts?</summary>
+        <p>Sim. O sistema aceita URLs no formato /shorts/, links /watch e links youtu.be.</p>
+      </details>
+      <details>
+        <summary>Posso baixar vários vídeos juntos?</summary>
+        <p>Sim. Cole um link por linha. O limite de cada lote pode ser configurado no servidor.</p>
+      </details>
+      <details>
+        <summary>Por que o FFmpeg é necessário?</summary>
+        <p>Ele é usado para unir vídeo e áudio em certas qualidades e também para gerar arquivos MP3.</p>
+      </details>
+      <details>
+        <summary>Posso publicar isso na internet?</summary>
+        <p>Sim, mas proteja o serviço contra abuso, limite concorrência e tráfego e verifique os termos aplicáveis ao conteúdo e à plataforma.</p>
+      </details>
+    </section>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <footer>
+    <span>TubeBatch</span>
+    <p>Ferramenta para conteúdo próprio, autorizado ou legalmente disponível.</p>
+  </footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>
